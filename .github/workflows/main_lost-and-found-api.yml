@@ -25,7 +25,8 @@ jobs:
         run: |
           npm install
           npm run build --if-present
-     
+          npm run test --if-present
+      
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
@@ -52,4 +53,4 @@ jobs:
           app-name: 'lost-and-found-api'
           slot-name: 'Production'
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B7EF304B7CBD4979BD392B93CE030FBA }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_BD6F93F7A2D44A4FB8650DFC5A63A0AC }}
