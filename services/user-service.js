@@ -45,7 +45,7 @@ const userService = {
       if (!avatar.mimetype.startsWith('image')) throw new Error('圖片格式不正確');
       const maxSize = 5 * 1024 * 1024; // 5MB
       if (avatar.size > maxSize) throw new Error('圖片太大了');
-      const path = req.file.url
+      const path = req.file.url.split('?')[0]; // 移除 SAS token
       if (!user) throw new Error('使用者不存在!')
       await user.update({
         name: req.body.name || user.name,

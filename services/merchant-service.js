@@ -46,7 +46,7 @@ const merchantService = {
       if (!logo.mimetype.startsWith('image')) throw new Error('圖片格式不正確');
       const maxSize = 5 * 1024 * 1024; // 5MB
       if (logo.size > maxSize) throw new Error('圖片太大了');
-      const path = req.file.url
+      const path = req.file.url.split('?')[0]; // 移除 SAS token
       await merchant.update({
         name: req.body.name || merchant.name,
         logo: path || merchant.logo,

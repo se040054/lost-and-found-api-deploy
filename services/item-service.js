@@ -37,7 +37,7 @@ const itemService = {
       if (!photo.mimetype.startsWith('image')) throw new Error('圖片格式不正確');
       const maxSize = 5 * 1024 * 1024; // 5MB
       if (photo.size > maxSize) throw new Error('圖片太大了');
-      const path = req.file.url
+      const path = req.file.url.split('?')[0]; // 移除 SAS token
       await item.update({
         name: req.body.name || item.name,
         description: req.body.description || item.description,
