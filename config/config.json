@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "igycfndfvt",
+    "password": "z$LJy7ukVT7QKAcF",
+    "database": "lost-and-found-database",
+    "host": "lost-and-found-server.mysql.database.azure.com",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "database_test",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "igycfndfvt",
+    "password": "z$LJy7ukVT7QKAcF",
+    "database": "lost-and-found-database",
+    "host": "lost-and-found-server.mysql.database.azure.com",
+    "dialect": "mysql"
+  }
+}
