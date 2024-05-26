@@ -4,10 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha",
-    "start": "node app.js",
-    "dev": "nodemon app.js",
-    "deploy": "gcloud app deploy"
+    "start": "node app.js"
   },
   "keywords": [],
   "author": "",
