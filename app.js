@@ -10,14 +10,13 @@ require('dotenv').config()
 const apis = require('./routes/index')
 app.use('/api', apis)
 
+const PORT = process.env.PORT || 443;
 
 app.get('/', (req, res) => {
-  const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-  console.log('Request received from IP:', ip);
-  res.send(`Hello, World! Your IP address is ${ip}`);
+
+  res.send('homePage' + PORT);
 });
 
-const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}...`);
   console.info(`${PORT} nod_env = ${process.env.NODE_ENV}`)
