@@ -32,13 +32,18 @@ const itemService = {
       const item = await Item.findByPk(req.params.id)
       if (!item) throw new Error('找不到此物品')
       if (item.userId !== req.user.id) throw new Error('無法修改他人刊登的物品')
-      const photo = req.file ? await fileHelper.fileToJpegItem(req.file) : null
+      // const photo = req.file ? await fileHelper.fileToJpegItem(req.file) : null
+      const photo = req.file
+      if (!photo.mimetype.startsWith('image')) throw new Error('圖片格式不正確');
+      const maxSize = 5 * 1024 * 1024; // 5MB
+      if (photo.size > maxSize) throw new Error('圖片太大了');
+      const path = req.file.url
       await item.update({
         name: req.body.name || item.name,
         description: req.body.description || item.description,
         place: req.body.place || item.place,
         findDate: req.body.findDate || item.findDate,
-        photo: photo || item.photo,
+        photo: path || item.photo,
         categoryId: req.body.categoryId || item.categoryId
       })
       await item.save()

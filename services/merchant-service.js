@@ -41,10 +41,15 @@ const merchantService = {
       const merchant = await Merchant.findByPk(req.params.id)
       if (!merchant) throw new Error('找不到此商家')
       if (merchant.userId !== req.user.id) throw new Error('僅能修改自己的商家')
-      const logo = req.file ? await fileHelper.fileToJpegUser(req.file) : null
+      // const logo = req.file ? await fileHelper.fileToJpegUser(req.file) : null
+      const logo = req.file
+      if (!logo.mimetype.startsWith('image')) throw new Error('圖片格式不正確');
+      const maxSize = 5 * 1024 * 1024; // 5MB
+      if (logo.size > maxSize) throw new Error('圖片太大了');
+      const path = req.file.url
       await merchant.update({
         name: req.body.name || merchant.name,
-        logo: logo || merchant.logo,
+        logo: path || merchant.logo,
         address: req.body.address || merchant.address,
         phone: req.body.phone || merchant.phone
       })
