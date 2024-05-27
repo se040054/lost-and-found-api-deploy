@@ -7,10 +7,18 @@ const merchantService = {
       const possessionMerchant = await Merchant.count({ where: { userId: req.user.id } })
       if (possessionMerchant >= 5) throw new Error('持有商家已達上限(5個)')
       const { name, address, phone } = req.body
-      const logo = req.file ? await fileHelper.fileToJpegUser(req.file) : null
+      // const logo = req.file ? await fileHelper.fileToJpegUser(req.file) : null
+      let path
+      if (req.file) {
+        const photo = req.file
+        if (!photo.mimetype.startsWith('image')) throw new Error('圖片格式不正確');
+        const maxSize = 5 * 1024 * 1024; // 5MB
+        if (photo.size > maxSize) throw new Error('圖片太大了');
+        path = req.file.url.split('?')[0]; // 移除 SAS token
+      }
       const newMerchant = await Merchant.create({
         name,
-        logo,
+        logo: path || null,
         address,
         phone,
         userId: req.user.id
@@ -42,11 +50,14 @@ const merchantService = {
       if (!merchant) throw new Error('找不到此商家')
       if (merchant.userId !== req.user.id) throw new Error('僅能修改自己的商家')
       // const logo = req.file ? await fileHelper.fileToJpegUser(req.file) : null
-      const logo = req.file
-      if (!logo.mimetype.startsWith('image')) throw new Error('圖片格式不正確');
-      const maxSize = 5 * 1024 * 1024; // 5MB
-      if (logo.size > maxSize) throw new Error('圖片太大了');
-      const path = req.file.url.split('?')[0]; // 移除 SAS token
+      let path
+      if (req.file) {
+        const photo = req.file
+        if (!photo.mimetype.startsWith('image')) throw new Error('圖片格式不正確');
+        const maxSize = 5 * 1024 * 1024; // 5MB
+        if (photo.size > maxSize) throw new Error('圖片太大了');
+        path = req.file.url.split('?')[0]; // 移除 SAS token
+      }
       await merchant.update({
         name: req.body.name || merchant.name,
         logo: path || merchant.logo,

@@ -13,8 +13,7 @@ app.use('/api', apis)
 const PORT = process.env.PORT || 443;
 
 app.get('/', (req, res) => {
-
-  res.send('homePage' + PORT);
+  res.send('Azure Deploy Server Is Running');
 });
 
 app.listen(PORT, () => {

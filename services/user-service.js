@@ -40,13 +40,17 @@ const userService = {
   putUser: async (req, cb) => {
     try {
       let user = await User.findByPk(req.params.id)
-      // const avatar = req.file ? await fileHelper.fileToJpegUser(req.file) : null
-      const avatar = req.file
-      if (!avatar.mimetype.startsWith('image')) throw new Error('圖片格式不正確');
-      const maxSize = 5 * 1024 * 1024; // 5MB
-      if (avatar.size > maxSize) throw new Error('圖片太大了');
-      const path = req.file.url.split('?')[0]; // 移除 SAS token
       if (!user) throw new Error('使用者不存在!')
+
+      // const avatar = req.file ? await fileHelper.fileToJpegUser(req.file) : null
+      let path
+      if (req.file) {
+        const photo = req.file
+        if (!photo.mimetype.startsWith('image')) throw new Error('圖片格式不正確');
+        const maxSize = 5 * 1024 * 1024; // 5MB
+        if (photo.size > maxSize) throw new Error('圖片太大了');
+        path = req.file.url.split('?')[0]; // 移除 SAS token
+      }
       await user.update({
         name: req.body.name || user.name,
         avatar: path || user.avatar,
